@@ -1,0 +1,29 @@
+ String sql = "SELECT id, name FROM rezept";
+
+        // The try-with-resources block automatically closes Connection and PreparedStatement
+        try (Connection myConn = new DbConnection().getConnection(); // Initialize PreparedStatement using the Connection object
+                 PreparedStatement stm = myConn.prepareStatement(sql); ResultSet rs = stm.executeQuery();) {
+
+            /*-------------------------
+             * Daten asu DB behendeln
+             *-------------------------
+             */
+            //Title for Table
+            System.out.println("LISTE DER REZEPTE");
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String rzName = rs.getString("name");
+                System.out.println("Rezept ID: " + id);
+                System.out.println("Rezept Name: " + rzName);
+                System.out.println("===================");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("DB Error: " + e.getMessage());
+
+        } catch (Exception e) {
+            System.out.println("System Error: " + e.getMessage());
+        }
+
+        System.out.println("Query: " + sql + " executed");
+    }
