@@ -3,7 +3,7 @@ package com.mycompany.app;
 import java.sql.SQLException;
 import java.util.List;
 
-public class TestMain {
+public class Test {
 
     //Test-Methode aus der Aufgabenstellung
     public static void testInsert() throws SQLException {
