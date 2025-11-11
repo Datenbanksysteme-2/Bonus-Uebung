@@ -25,7 +25,8 @@ public class Genre {
 
     //Insert-Methode
     public void insert() throws SQLException {
-        Connection conn = DbConnection.getConnection();
+        DbConnection db = new DbConnection();
+        Connection conn = db.getConnection();
 
         //Neue ID aus Sequenz holen
         String seqSql = "SELECT nextval('genre_seq')";

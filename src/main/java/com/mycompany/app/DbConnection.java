@@ -20,7 +20,7 @@ public class DbConnection {
         this.uri = dotenv.get("DB_URI");
     }
 
-    public static Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
         Connection conn = DriverManager.getConnection(this.uri, this.userName, this.password);
         System.out.println("DB connected successfully");
         return conn;

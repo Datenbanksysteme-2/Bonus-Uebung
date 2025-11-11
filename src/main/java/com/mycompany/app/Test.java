@@ -1,5 +1,6 @@
 package com.mycompany.app;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -36,9 +37,11 @@ public class Test {
             movieGenre.setMovieId(movie.getMovieId());
             movieGenre.insert();
 
-            DbConnection.getConnection().commit();
+            DbConnection db = new DbConnection();
+            db.getConnection().commit();
         } catch (Exception e) {
-            DbConnection.getConnection().rollback();
+            DbConnection db = new DbConnection();
+            db.getConnection().rollback();
             throw e;
         }
     }

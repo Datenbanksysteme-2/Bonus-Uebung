@@ -25,7 +25,8 @@ public class MovieGenre {
 
     // Insert-Methode
     public void insert() throws SQLException {
-        Connection conn = DbConnection.getConnection();
+        DbConnection db = new DbConnection();
+        Connection conn = db.getConnection();
 
         // Keine Sequenz nötig - Primärschlüssel ist zusammengesetzt aus Fremdschlüsseln
         String sql = "INSERT INTO MovieGenre (MovieID, GenreID) VALUES (?, ?)";

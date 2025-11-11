@@ -52,7 +52,8 @@ public class MovieCharacter {
 
     //Insert-Methode
     public void insert() throws SQLException {
-        Connection conn = DbConnection.getConnection();
+        DbConnection db = new DbConnection();
+        Connection conn = db.getConnection();
 
         //Keine Sequenz nötig - Primärschlüssel ist zusammengesetzt
         String sql = "INSERT INTO MovieCharacter (MovieID, PlayerID, Character, Alias, Position) " +

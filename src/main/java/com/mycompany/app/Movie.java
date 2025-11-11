@@ -43,7 +43,8 @@ public class Movie {
 
     //Insert-Methode
     public void insert() throws SQLException {
-        Connection conn = DbConnection.getConnection();
+        DbConnection db = new DbConnection();
+        Connection conn = db.getConnection();
 
         //Neue ID aus Sequenz holen
         String seqSql = "SELECT nextval('movie_seq')";
@@ -67,7 +68,8 @@ public class Movie {
 
     //Update-Methode
     public void update() throws SQLException {
-        Connection conn = DbConnection.getConnection();
+        DbConnection db = new DbConnection();
+        Connection conn = db.getConnection();
         String sql = "UPDATE Movie SET Title = ?, Year = ?, Type = ? WHERE MovieID = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -81,7 +83,8 @@ public class Movie {
 
     //Delete-Methode
     public void delete() throws SQLException {
-        Connection conn = DbConnection.getConnection();
+        DbConnection db = new DbConnection();
+        Connection conn = db.getConnection();
         String sql = "DELETE FROM Movie WHERE MovieID = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

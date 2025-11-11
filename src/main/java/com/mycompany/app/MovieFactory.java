@@ -11,7 +11,8 @@ public class MovieFactory {
      * @return Das Movie-Objekt oder null, wenn nicht gefunden
      */
     public static Movie findById(long id) throws SQLException {
-        Connection conn = DbConnection.getConnection();
+        DbConnection db = new DbConnection();
+        Connection conn = db.getConnection();
         String sql = "SELECT MovieID, Title, Year, Type FROM Movie WHERE MovieID = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -38,7 +39,8 @@ public class MovieFactory {
      */
     public static List<Movie> findByTitle(String title) throws SQLException {
         List<Movie> movies = new ArrayList<>();
-        Connection conn = DbConnection.getConnection();
+        DbConnection db = new DbConnection();
+        Connection conn = db.getConnection();
 
         //LIKE für case-insensitive Suche in PostgreSQL
         String sql = "SELECT MovieID, Title, Year, Type FROM Movie WHERE Title LIKE ?";
