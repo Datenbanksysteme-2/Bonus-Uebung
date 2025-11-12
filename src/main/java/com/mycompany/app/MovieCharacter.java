@@ -1,8 +1,12 @@
 package com.mycompany.app;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Types;
 
 public class MovieCharacter {
+
     private long movieId;
     private long playerId;
     private String character;
@@ -52,12 +56,11 @@ public class MovieCharacter {
 
     //Insert-Methode
     public void insert() throws SQLException {
-        DbConnection db = new DbConnection();
-        Connection conn = db.getConnection();
+        Connection conn = DbConnection.getConnection();
 
         //Keine Sequenz nötig - Primärschlüssel ist zusammengesetzt
-        String sql = "INSERT INTO MovieCharacter (MovieID, PlayerID, Character, Alias, Position) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO MovieCharacter (MovieID, PlayerID, Character, Alias, Position) "
+                + "VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, this.movieId);

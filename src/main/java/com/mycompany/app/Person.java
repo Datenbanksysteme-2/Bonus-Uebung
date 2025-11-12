@@ -1,5 +1,9 @@
 package com.mycompany.app;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Person {
     private long personId;
@@ -24,8 +28,7 @@ public class Person {
 
     //Insert-Methode
     public void insert() throws SQLException {
-        DbConnection db = new DbConnection();
-        Connection conn = db.getConnection();
+        Connection conn = DbConnection.getConnection();
 
         //Neue ID aus Sequenz holen
         String seqSql = "SELECT nextval('person_seq')";
@@ -42,6 +45,7 @@ public class Person {
             pstmt.setLong(1, this.personId);
             pstmt.setString(2, this.name);
             pstmt.executeUpdate();
+            
         }
     }
 }

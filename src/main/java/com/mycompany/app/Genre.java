@@ -1,8 +1,13 @@
 package com.mycompany.app;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Genre {
+
     private long genreId;
     private String genre;
 
@@ -25,13 +30,11 @@ public class Genre {
 
     //Insert-Methode
     public void insert() throws SQLException {
-        DbConnection db = new DbConnection();
-        Connection conn = db.getConnection();
+        Connection conn = DbConnection.getConnection();
 
         //Neue ID aus Sequenz holen
         String seqSql = "SELECT nextval('genre_seq')";
-        try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(seqSql)) {
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(seqSql)) {
             if (rs.next()) {
                 this.genreId = rs.getLong(1);
             }

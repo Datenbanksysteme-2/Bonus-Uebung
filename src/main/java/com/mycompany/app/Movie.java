@@ -1,8 +1,13 @@
 package com.mycompany.app;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Movie {
+
     private long movieId;
     private String title;
     private int year;
@@ -43,13 +48,11 @@ public class Movie {
 
     //Insert-Methode
     public void insert() throws SQLException {
-        DbConnection db = new DbConnection();
-        Connection conn = db.getConnection();
+        Connection conn = DbConnection.getConnection();
 
         //Neue ID aus Sequenz holen
         String seqSql = "SELECT nextval('movie_seq')";
-        try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(seqSql)) {
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(seqSql)) {
             if (rs.next()) {
                 this.movieId = rs.getLong(1);
             }
@@ -68,8 +71,8 @@ public class Movie {
 
     //Update-Methode
     public void update() throws SQLException {
-        DbConnection db = new DbConnection();
-        Connection conn = db.getConnection();
+        Connection conn = DbConnection.getConnection();
+
         String sql = "UPDATE Movie SET Title = ?, Year = ?, Type = ? WHERE MovieID = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -83,8 +86,8 @@ public class Movie {
 
     //Delete-Methode
     public void delete() throws SQLException {
-        DbConnection db = new DbConnection();
-        Connection conn = db.getConnection();
+        Connection conn = DbConnection.getConnection();
+
         String sql = "DELETE FROM Movie WHERE MovieID = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

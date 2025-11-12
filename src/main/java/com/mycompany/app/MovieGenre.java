@@ -1,8 +1,11 @@
 package com.mycompany.app;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class MovieGenre {
+
     private long movieId;
     private long genreId;
 
@@ -25,8 +28,7 @@ public class MovieGenre {
 
     // Insert-Methode
     public void insert() throws SQLException {
-        DbConnection db = new DbConnection();
-        Connection conn = db.getConnection();
+        Connection conn = DbConnection.getConnection();
 
         // Keine Sequenz nötig - Primärschlüssel ist zusammengesetzt aus Fremdschlüsseln
         String sql = "INSERT INTO MovieGenre (MovieID, GenreID) VALUES (?, ?)";
