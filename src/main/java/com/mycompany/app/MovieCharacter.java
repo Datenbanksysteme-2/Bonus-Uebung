@@ -7,6 +7,7 @@ import java.sql.Types;
 
 public class MovieCharacter {
 
+    private int movCharID;
     private long movieId;
     private long playerId;
     private String character;
@@ -14,6 +15,15 @@ public class MovieCharacter {
     private Integer position;
 
     //Getter und Setter
+
+    public int getMovCharID() {
+        return movCharID;
+    }
+
+    public void setMovCharID(int movCharID) {
+        this.movCharID = movCharID;
+    }
+
     public long getMovieId() {
         return movieId;
     }
@@ -59,24 +69,26 @@ public class MovieCharacter {
         Connection conn = DbConnection.getConnection();
 
         //Keine Sequenz nötig - Primärschlüssel ist zusammengesetzt
-        String sql = "INSERT INTO MovieCharacter (MovieID, PlayerID, Character, Alias, Position) "
-                + "VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO MovieCharacter (moveCharID, MovieID,  PlayerID, Character, Alias, Position) "
+                + "VALUES (?, ?, ?, ?, ?, ? )";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, this.movieId);
-            pstmt.setLong(2, this.playerId);
-            pstmt.setString(3, this.character);
+            pstmt.setInt(1, this.movCharID);
+            pstmt.setLong(2, this.movieId);
+            pstmt.setLong(3, this.playerId);
+            pstmt.setString(4, this.character);
+
 
             if (this.alias != null) {
-                pstmt.setString(4, this.alias);
+                pstmt.setString(5, this.alias);
             } else {
-                pstmt.setNull(4, Types.VARCHAR);
+                pstmt.setNull(5, Types.VARCHAR);
             }
 
             if (this.position != null) {
-                pstmt.setInt(5, this.position);
+                pstmt.setInt(6, this.position);
             } else {
-                pstmt.setNull(5, Types.INTEGER);
+                pstmt.setNull(6, Types.INTEGER);
             }
 
             pstmt.executeUpdate();

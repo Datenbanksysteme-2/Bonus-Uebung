@@ -47,27 +47,5 @@ public class Person {
             pstmt.executeUpdate();
             
         }
-    }
-    //Update-Methode
-    public void update() throws SQLException {
-        DbConnection db = new DbConnection();
-        Connection conn = db.getConnection();
-        String sql = "UPDATE person SET name = ? WHERE personid = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, this.name);
-            pstmt.setLong(2, this.personId);
-            pstmt.executeUpdate();
-        }
-    }    
-
-    //Delete-Methode
-    public void delete() throws SQLException {
-        DbConnection db = new DbConnection();
-        Connection conn = db.getConnection();
-        String sql = "DELETE FROM Person WHERE PersonID = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, this.personId);
-            pstmt.executeUpdate();
-        }
-    }    
+    }  
 }
