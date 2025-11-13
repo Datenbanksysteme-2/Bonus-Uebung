@@ -2,7 +2,9 @@ package com.mycompany.app;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 
 public class MovieCharacter {
@@ -15,7 +17,6 @@ public class MovieCharacter {
     private Integer position;
 
     //Getter und Setter
-
     public long getMovCharID() {
         return movCharID;
     }
@@ -68,8 +69,15 @@ public class MovieCharacter {
     public void insert() throws SQLException {
         Connection conn = DbConnection.getConnection();
 
+        String seqSql = "SELECT nextval('moviechar_seq')";
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(seqSql)) {
+            if (rs.next()) {
+                this.movCharID = rs.getLong(1);
+            }
+        }
+
         //Keine Sequenz nötig - Primärschlüssel ist zusammengesetzt
-        String sql = "INSERT INTO MovieCharacter (moveCharID, MovieID,  PlayerID, Character, Alias, Position) "
+        String sql = "INSERT INTO MovieCharacter (MovCharID, MovieID,  PlayerID, Character, Alias, Position) "
                 + "VALUES (?, ?, ?, ?, ?, ? )";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -77,7 +85,6 @@ public class MovieCharacter {
             pstmt.setLong(2, this.movieId);
             pstmt.setLong(3, this.playerId);
             pstmt.setString(4, this.character);
-
 
             if (this.alias != null) {
                 pstmt.setString(5, this.alias);
