@@ -7,7 +7,7 @@ import java.sql.Types;
 
 public class MovieCharacter {
 
-    private int movCharID;
+    private long movCharID;
     private long movieId;
     private long playerId;
     private String character;
@@ -16,11 +16,11 @@ public class MovieCharacter {
 
     //Getter und Setter
 
-    public int getMovCharID() {
+    public long getMovCharID() {
         return movCharID;
     }
 
-    public void setMovCharID(int movCharID) {
+    public void setMovCharID(long movCharID) {
         this.movCharID = movCharID;
     }
 
@@ -73,7 +73,7 @@ public class MovieCharacter {
                 + "VALUES (?, ?, ?, ?, ?, ? )";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, this.movCharID);
+            pstmt.setLong(1, this.movCharID);
             pstmt.setLong(2, this.movieId);
             pstmt.setLong(3, this.playerId);
             pstmt.setString(4, this.character);
