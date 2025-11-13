@@ -9,21 +9,23 @@ DROP TABLE IF EXISTS Genre CASCADE;
 DROP SEQUENCE IF EXISTS person_seq;
 DROP SEQUENCE IF EXISTS movie_seq;
 DROP SEQUENCE IF EXISTS genre_seq;
+DROP SEQUENCE IF EXISTS moviechar_seq;
 
 -- Create sequences for ID generation
 CREATE SEQUENCE person_seq START 1;
 CREATE SEQUENCE movie_seq START 1;
 CREATE SEQUENCE genre_seq START 1;
+CREATE SEQUENCE moviechar_seq START 1;
 
 -- Create Person table
 CREATE TABLE Person (
-    PersonID BIGINT PRIMARY KEY,
+    PersonID BIGINT PRIMARY KEY DEFAULT nextval('person_seq'),
     Name VARCHAR(255) NOT NULL
 );
 
 -- Create Movie table
 CREATE TABLE Movie (
-    MovieID BIGINT PRIMARY KEY,
+    MovieID BIGINT PRIMARY KEY DEFAULT nextval('movie_seq'),
     Title VARCHAR(255) NOT NULL,
     Year INT NOT NULL,
     Type CHAR(1) NOT NULL
@@ -31,18 +33,18 @@ CREATE TABLE Movie (
 
 -- Create Genre table
 CREATE TABLE Genre (
-    GenreID BIGINT PRIMARY KEY,
+    GenreID BIGINT PRIMARY KEY DEFAULT nextval('genre_seq'),
     Genre VARCHAR(100) NOT NULL
 );
 
 -- Create MovieCharacter table (1:N relationship from Movie and Person)
 CREATE TABLE MovieCharacter (
+    MovCharID BIGINT PRIMARY KEY DEFAULT nextval('moviechar_seq'),
     MovieID BIGINT NOT NULL,
     PlayerID BIGINT NOT NULL,
     Character VARCHAR(255) NOT NULL,
     Alias VARCHAR(255),
     Position INT,
-    PRIMARY KEY (MovieID, PlayerID, Character),
     FOREIGN KEY (MovieID) REFERENCES Movie(MovieID) ON DELETE CASCADE,
     FOREIGN KEY (PlayerID) REFERENCES Person(PersonID) ON DELETE CASCADE
 );

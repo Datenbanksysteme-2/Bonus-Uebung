@@ -1,9 +1,6 @@
 package com.mycompany.app;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 
 public class MovieCharacter {
 
@@ -69,29 +66,32 @@ public class MovieCharacter {
         Connection conn = DbConnection.getConnection();
 
         //Keine Sequenz nötig - Primärschlüssel ist zusammengesetzt
-        String sql = "INSERT INTO MovieCharacter (moveCharID, MovieID,  PlayerID, Character, Alias, Position) "
-                + "VALUES (?, ?, ?, ?, ?, ? )";
+        String sql = "INSERT INTO MovieCharacter (MovieID,  PlayerID, Character, Alias, Position) "
+                + "VALUES (?, ?, ?, ?, ?) RETURNING movCharID";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, this.movCharID);
-            pstmt.setLong(2, this.movieId);
-            pstmt.setLong(3, this.playerId);
-            pstmt.setString(4, this.character);
+            pstmt.setLong(1, this.movieId);
+            pstmt.setLong(2, this.playerId);
+            pstmt.setString(3, this.character);
 
 
             if (this.alias != null) {
-                pstmt.setString(5, this.alias);
+                pstmt.setString(4, this.alias);
             } else {
-                pstmt.setNull(5, Types.VARCHAR);
+                pstmt.setNull(4, Types.VARCHAR);
             }
 
             if (this.position != null) {
-                pstmt.setInt(6, this.position);
+                pstmt.setInt(5, this.position);
             } else {
-                pstmt.setNull(6, Types.INTEGER);
+                pstmt.setNull(5, Types.INTEGER);
             }
 
-            pstmt.executeUpdate();
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    this.movCharID = rs.getLong(1); // store the generated ID
+                }
+            }
         }
     }
 }
