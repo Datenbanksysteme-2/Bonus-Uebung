@@ -13,7 +13,8 @@ public class MovieFactory {
      * Findet einen Film anhand seiner ID
      *
      * @param id Die ID des gesuchten Films
-     * @return Das Movie-Objekt oder null, wenn nicht gefunden
+     * @return Das {@code Movie}-Objekt oder {@code null}, wenn es nicht
+     * gefunden wurde.
      */
     public static Movie findById(long id) throws SQLException {
         Connection conn = DbConnection.getConnection();
@@ -42,17 +43,17 @@ public class MovieFactory {
      * Findet alle Filme, deren Titel den Suchstring enthält
      *
      * @param title Der gesuchte Titel (oder Teilstring)
-     * @return Liste aller gefundenen Filme
+     * @return Eine Liste aller gefundenen Filme.
      */
     public static List<Movie> findByTitle(String title) throws SQLException {
         List<Movie> movies = new ArrayList<>();
         Connection conn = DbConnection.getConnection();
 
-        //LIKE für case-insensitive Suche in PostgreSQL
+        // LIKE für eine Suche ohne Berücksichtigung der Groß- und Kleinschreibung in PostgreSQL
         String sql = "SELECT MovieID, Title, Year, Type FROM Movie WHERE Title LIKE ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            //% für Wildcard-Suche (Teilstring-Matching)
+            // % für die Wildcard-Suche (Teilstring-Abgleich)
             pstmt.setString(1, "%" + title + "%");
 
             try (ResultSet rs = pstmt.executeQuery()) {

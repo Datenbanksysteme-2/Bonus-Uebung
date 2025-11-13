@@ -99,8 +99,13 @@ public class App {
             System.out.println("================== Test Insert endet ==================");
 
             System.out.println("================== Test FindById and FindByTitle beginnt ==================");
-            Movie mv = MovieFactory.findById(3);
-            System.out.println("Gefundener Film By Id: " + mv.getTitle());
+            Movie mv = MovieFactory.findById(2);
+            if (mv != null) {
+                System.out.println("Gefundener Film By Id: " + mv.getTitle());
+            } else {
+                System.out.println("Movie nicht gefunden!");
+            }
+
             List<Movie> listByTitle = MovieFactory.findByTitle("Die tolle Komoedie");
             for (Movie m : listByTitle) {
                 System.out.println("Gefundener Film mit Titel: " + m.getTitle());

@@ -76,7 +76,7 @@ public class MovieCharacter {
             }
         }
 
-        //Keine Sequenz nötig - Primärschlüssel ist zusammengesetzt
+        // Neue ID aus Sequenz holen
         String sql = "INSERT INTO MovieCharacter (MovCharID, MovieID,  PlayerID, Character, Alias, Position) "
                 + "VALUES (?, ?, ?, ?, ?, ? )";
 
