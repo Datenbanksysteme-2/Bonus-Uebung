@@ -25,7 +25,7 @@ public class GenreManager {
 			throw new Exception("Database connection is not open. Call DBConnection.open() before using managers.");
 		}
 
-		String sql = "SELECT name FROM genre ORDER BY name";
+		String sql = "SELECT Genre FROM Genre ORDER BY Genre";
 
 		try (PreparedStatement pst = con.prepareStatement(sql);
 			 ResultSet rs = pst.executeQuery()) {
