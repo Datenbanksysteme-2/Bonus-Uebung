@@ -21,7 +21,7 @@ public class PersonManager {
      */
     public List<String> getPersonList(String name) throws Exception {
         List<String> personNames = new ArrayList<>();
-        // Sử dụng ILIKE cho tìm kiếm không phân biệt chữ hoa chữ thường trong PostgreSQL
+        // ILIKE für eine Suche ohne Berücksichtigung der Groß- und Kleinschreibung in PostgreSQL verwenden
         String sql = "SELECT Name FROM Person WHERE Name ILIKE ?";
 
         Connection conn = DBConnection.getConnection();

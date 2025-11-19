@@ -170,7 +170,7 @@ public class MovieManager {
         Connection conn = DBConnection.getConnection();
         MovieDTO movieDTO = new MovieDTO();
 
-        // Lấy thông tin cơ bản của phim
+        // Grundlegende Filminformationen abrufen
         String movieSql = "SELECT MovieID, Title, Year, Type FROM Movie WHERE MovieID = ?";
         try (PreparedStatement stmt = conn.prepareStatement(movieSql)) {
             stmt.setInt(1, movieId);
@@ -186,7 +186,7 @@ public class MovieManager {
             }
         }
 
-        // Lấy các thể loại của phim
+        // Filmgenres abrufen
         String genreSql = "SELECT g.Genre FROM Genre g JOIN MovieGenre mg ON g.GenreID = mg.GenreID WHERE mg.MovieID = ?";
         try (PreparedStatement stmt = conn.prepareStatement(genreSql)) {
             stmt.setInt(1, movieId);
@@ -197,7 +197,7 @@ public class MovieManager {
             }
         }
 
-        // Lấy các nhân vật trong phim
+        // Filmcharaktere abrufen
         String characterSql = "SELECT p.Name, mc.Character, mc.Alias FROM Person p JOIN MovieCharacter mc ON p.PersonID = mc.PlayerID WHERE mc.MovieID = ?";
         try (PreparedStatement stmt = conn.prepareStatement(characterSql)) {
             stmt.setInt(1, movieId);
