@@ -27,7 +27,7 @@ public class MovieManager {
             List<Movie> movies = MovieFactory.findByTitle(search);
             List<MovieDTO> movieDTOs = new ArrayList<>();
             for (Movie movie : movies) {
-                // Für jeden gefundenen Film die vollständigen Details abrufen
+                // Für jeden gefundenen Film die vollständigen Details abrufen.
                 movieDTOs.add(getMovie((int) movie.getMovieId()));
             }
             return movieDTOs;
@@ -49,23 +49,23 @@ public class MovieManager {
     public void insertUpdateMovie(MovieDTO movieDTO) throws Exception {
         Connection conn = DBConnection.getConnection();
         try {
-            conn.setAutoCommit(false); // Start transaction
+            conn.setAutoCommit(false); // Transaktion starten
 
-            // Step 1: Handle the Movie object (Insert or Update)
+            // Schritt 1: Das Movie-Objekt behandeln (Einfügen oder Aktualisieren)
             Movie movie = new Movie();
             movie.setTitle(movieDTO.getTitle());
             movie.setYear(movieDTO.getYear());
             movie.setType(movieDTO.getType());
 
             if (movieDTO.getId() == null) {
-                // Insert new movie
+                // Neuen Film einfügen
                 movie.insert();
             } else {
-                // Update existing movie
+                // Bestehenden Film aktualisieren
                 movie.setMovieId(movieDTO.getId());
                 movie.update();
 
-                // Delete old dependencies (Genres and Characters) as requested
+                // Alte Abhängigkeiten (Genres und Charaktere) wie gewünscht löschen
                 try (PreparedStatement stmt = conn.prepareStatement("DELETE FROM MovieGenre WHERE MovieID = ?")) {
                     stmt.setLong(1, movie.getMovieId());
                     stmt.executeUpdate();
@@ -74,11 +74,11 @@ public class MovieManager {
                     stmt.setLong(1, movie.getMovieId());
                     stmt.executeUpdate();
                 }
-            }
+            } 
 
-            // Step 2: Handle Genres
+            // Schritt 2: Genres behandeln
             for (String genreName : movieDTO.getGenres()) {
-                // Find or create the Genre to get its ID
+                // Das Genre suchen oder erstellen, um seine ID zu erhalten
                 long genreId;
                 try (PreparedStatement stmt = conn.prepareStatement("SELECT GenreID FROM Genre WHERE Genre = ?")) {
                     stmt.setString(1, genreName);
@@ -86,7 +86,7 @@ public class MovieManager {
                     if (rs.next()) {
                         genreId = rs.getLong("GenreID");
                     } else {
-                        // Genre does not exist, create it using the Active Record
+                        // Genre existiert nicht, also mit Active Record erstellen
                         Genre newGenre = new Genre();
                         newGenre.setGenre(genreName);
                         newGenre.insert();
@@ -94,30 +94,30 @@ public class MovieManager {
                     }
                 }
 
-                // Create the link in the MovieGenre table
+                // Die Verknüpfung in der MovieGenre-Tabelle erstellen
                 MovieGenre movieGenre = new MovieGenre();
                 movieGenre.setMovieId(movie.getMovieId());
                 movieGenre.setGenreId(genreId);
                 movieGenre.insert();
             }
 
-            // Step 3: Handle Characters
+            // Schritt 3: Charaktere behandeln
             for (CharacterDTO charDTO : movieDTO.getCharacters()) {
-                // Find or create the Person (player) to get their ID
+                // Die Person (Schauspieler) suchen oder erstellen, um ihre ID zu erhalten
                 long personId;
                 PersonManager personManager = new PersonManager();
                 try {
-                    // Assumes getPerson throws an exception if not found
+                    // Geht davon aus, dass getPerson eine Ausnahme wirft, wenn sie nicht gefunden wird
                     personId = personManager.getPerson(charDTO.getPlayer());
                 } catch (Exception e) {
-                    // Person does not exist, create them using the Active Record
+                    // Person existiert nicht, also mit Active Record erstellen
                     Person newPerson = new Person();
                     newPerson.setName(charDTO.getPlayer());
                     newPerson.insert();
                     personId = newPerson.getPersonId();
                 }
 
-                // Create the MovieCharacter link using the Active Record
+                // Die MovieCharacter-Verknüpfung mit Active Record erstellen
                 MovieCharacter movieChar = new MovieCharacter();
                 movieChar.setMovieId(movie.getMovieId());
                 movieChar.setPlayerId(personId);
@@ -126,9 +126,9 @@ public class MovieManager {
                 movieChar.insert();
             }
 
-            conn.commit(); // Commit the transaction
+            conn.commit(); // Transaktion bestätigen
         } catch (SQLException e) {
-            conn.rollback(); // Rollback on error
+            conn.rollback(); // Bei Fehler zurücksetzen
             throw new Exception("Error inserting/updating movie in database", e);
         }
     }
@@ -143,16 +143,16 @@ public class MovieManager {
     public void deleteMovie(int movieId) throws Exception {
         Connection conn = DBConnection.getConnection();
         try {
-            conn.setAutoCommit(false); // Start transaction
+            conn.setAutoCommit(false); // Transaktion starten
 
-            // Dependencies are deleted by database constraints (ON DELETE CASCADE)
+            // Abhängigkeiten werden durch Datenbank-Constraints (ON DELETE CASCADE) gelöscht
             Movie movie = new Movie();
             movie.setMovieId(movieId);
             movie.delete();
 
-            conn.commit(); // Commit the transaction
+            conn.commit(); // Transaktion bestätigen
         } catch (SQLException e) {
-            conn.rollback(); // Rollback on error
+            conn.rollback(); // Bei Fehler zurücksetzen
             throw new Exception("Error deleting movie with ID " + movieId, e);
         }
     }
