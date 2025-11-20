@@ -27,8 +27,8 @@ public class GenreManager {
 
 		String sql = "SELECT Genre FROM Genre ORDER BY Genre";
 
-		try (PreparedStatement pst = con.prepareStatement(sql);
-			 ResultSet rs = pst.executeQuery()) {
+		try (PreparedStatement stmt = con.prepareStatement(sql);
+			 ResultSet rs = stmt.executeQuery()) {
 
 			while (rs.next()) {
 				genres.add(rs.getString(1));
